@@ -8,7 +8,7 @@ Test file size: 580499010 bytes (~553 Mb)
 
 On SSD, 1100 Mb/sec measured write speed
 
-Sync writes:
+### Sync writes:
 
 | # | Test name                     | Test time     | Write speed (Mb/sec)|
 |---|-------------------------------|---------------|---------------------|
@@ -17,7 +17,8 @@ Sync writes:
 | 3 | "AsyncFileWithOneWorker"      | 1.098392675s  | ~503.6 Mb/sec *     |
 | 4 | "AsyncFileWithManyWorkers"    | 3.113883248s  | ~177.6 Mb/sec       |
 
-Async writes:
+### Async writes:
+
 | # | Test name                     | Test time     | Write speed (Mb/sec)|
 |---|-------------------------------|---------------|---------------------|
 | 1 | "FileAsync"                   | 45.370138542s | ~12.2  Mb/sec       |
