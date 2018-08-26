@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"time"
 )
 
@@ -12,17 +11,17 @@ const (
 	// Filename - filenate to use
 	Filename = "/tmp/testfile"
 
-	// FinalEntriesCount - data set size
-	FinalEntriesCount = 44739242
-
-	// MinEntriesCount - min data set size for debugging
-	MinEntriesCount = 4473924
+	// EntriesCount - data set size
+	EntriesCount = 5000000
 
 	// AsyncWorkersCount - amount of async workers that write to a file (for async tests)
 	AsyncWorkersCount = 100
 
 	// FileBufferSize - size of the buffer for buffered writes
 	FileBufferSize = 1024 * 1024
+
+	// PayloadString - payload
+	PayloadString = "The idea here is that we are going to open a file and append data to it, tracking what we’re doing with a fixed length: %d\n"
 )
 
 // GeneratePayload - prepare data to be written
@@ -30,11 +29,10 @@ func GeneratePayload(entriesCount int) (data [][]byte) {
 	fmt.Println("Generating payload...")
 	start := time.Now()
 
-	dataTmpl := "The idea here is that we are going to open a file and append data to it, tracking what we’re doing with a fixed length: %d\n"
 	data = make([][]byte, entriesCount)
 
 	for i := 0; i < entriesCount; i++ {
-		data[i] = []byte(fmt.Sprintf(dataTmpl, i))
+		data[i] = []byte(fmt.Sprintf(PayloadString, i))
 	}
 
 	fmt.Println("Payload created in", time.Since(start))
@@ -52,15 +50,15 @@ func RunTest(proc func(data [][]byte) time.Duration, testName string, data [][]b
 		elapsed := proc(data)
 		elapsedTotal += elapsed
 
-		st, _ := os.Stat(Filename)
-		fmt.Println("Test done in", elapsed, "file size:", st.Size())
+		// st, _ := os.Stat(Filename)
+		// fmt.Println("Test done in", elapsed, "file size:", st.Size())
 	}
 
 	fmt.Printf("Average time on %v iterations: %v\n", iterations, elapsedTotal/time.Duration(iterations))
 }
 
 func main() {
-	payload := GeneratePayload(MinEntriesCount)
+	payload := GeneratePayload(EntriesCount)
 	iterations := 10
 
 	RunTest(TestFile, "TestFile", payload, iterations)
